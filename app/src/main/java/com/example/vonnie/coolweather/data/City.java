@@ -1,12 +1,13 @@
 package com.example.vonnie.coolweather.data;
 
 import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
 
-public class City extends LitePal{
+public class City extends LitePalSupport{
     private int id;
     private String cityName;
     private int cityCode;
-    private int provinceId;
+    private int provinceid;
     public int getId(){
         return id;
     }
@@ -26,9 +27,9 @@ public class City extends LitePal{
         return cityCode;
     }
     public int getProvinceId(){
-        return provinceId;
+        return provinceid;
     }
     public void setProvinceId(int provinceId){
-        this.provinceId=provinceId;
+        this.provinceid=provinceId;
     }
 }
