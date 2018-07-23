@@ -1,5 +1,7 @@
 package com.example.vonnie.coolweather;
 
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.vonnie.coolweather.gson.Forecast;
 import com.example.vonnie.coolweather.gson.Weather;
+import com.example.vonnie.coolweather.service.AutoUpdateService;
 import com.example.vonnie.coolweather.util.HttpUtil;
 import com.example.vonnie.coolweather.util.Utility;
 
@@ -120,6 +123,7 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
             }
@@ -138,8 +142,9 @@ public class WeatherActivity extends AppCompatActivity {
                             showWeatherInfo(weather);
                         }else{
                             Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
-                            swipeRefreshLayout.setRefreshing(false);
+
                         }
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
 
@@ -150,6 +155,8 @@ public class WeatherActivity extends AppCompatActivity {
 
     //处理并展示Weather实体类中的数据
     private void showWeatherInfo(Weather weather){
+        Intent intent=new Intent(this, AutoUpdateService.class);
+        startService(intent);
         String cityName=weather.basic.cityName;
         String updateTime=weather.basic.update.updateTime.split(" ")[1];
         String degree=weather.now.temmperature+"°C";
