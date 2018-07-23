@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.example.vonnie.coolweather.data.City;
 import com.example.vonnie.coolweather.data.County;
 import com.example.vonnie.coolweather.data.Province;
+import com.example.vonnie.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,5 +74,20 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    //将返回的JSON数据解析成Weather实体类
+    public static Weather handleWeatherResponse(String response){
+        try{
+            //先通过JSONObeject和JSONArray将天气数据中的主体内容解析出来
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            //调用fromJson方法直接将JSON数据转换成Weather对象
+            return new Gson().fromJson(weatherContent,Weather.class);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
